@@ -19,18 +19,12 @@ if ($config['smtp_host'] === '' || $config['smtp_username'] === '' || $config['s
 }
 
 $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$rateFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'profile_contact_' . hash('sha256', $clientIp) . '.json';
+$rateFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'profile_contact_v2_' . hash('sha256', $clientIp) . '.json';
 $now = time();
 $rateData = is_file($rateFile) ? json_decode((string) file_get_contents($rateFile), true) : [];
 $recentRequests = array_values(array_filter(is_array($rateData) ? $rateData : [], static function ($timestamp) use ($now): bool {
     return is_int($timestamp) && $timestamp > $now - 3600;
 }));
-if (count($recentRequests) >= 3) {
-    http_response_code(429);
-    exit('Too many requests. Please try again later.');
-}
-$recentRequests[] = $now;
-file_put_contents($rateFile, json_encode($recentRequests), LOCK_EX);
 
 if (!empty($_POST['website'] ?? '')) {
     http_response_code(400);
@@ -60,6 +54,13 @@ if (!is_array($recaptcha) || empty($recaptcha['success']) || ($recaptcha['action
     http_response_code(400);
     exit('Spam verification failed. Please try again.');
 }
+
+if (count($recentRequests) >= 3) {
+    http_response_code(429);
+    exit('Too many requests. Please try again later.');
+}
+$recentRequests[] = $now;
+file_put_contents($rateFile, json_encode($recentRequests), LOCK_EX);
 
 require __DIR__ . '/vendor/phpmailer/phpmailer/src/Exception.php';
 require __DIR__ . '/vendor/phpmailer/phpmailer/src/PHPMailer.php';
