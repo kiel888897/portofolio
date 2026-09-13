@@ -104,10 +104,12 @@ contactForm?.addEventListener("submit", async (event) => {
 
     contactForm.reset();
     if (window.grecaptcha) {
-      window.grecaptcha.execute("6LdLo6spAAAAAO46WwArY_t1n6QoeY_lChqDi_Yy", { action: "contact_form" }).then((token) => {
-        const tokenField = contactForm.querySelector("[name=recaptcha_token]");
-        if (tokenField) tokenField.value = token;
-      });
+      window.grecaptcha
+        .execute("6LdLo6spAAAAAO46WwArY_t1n6QoeY_lChqDi_Yy", { action: "contact_form" })
+        .then((token) => {
+          const tokenField = contactForm.querySelector("[name=recaptcha_token]");
+          if (tokenField) tokenField.value = token;
+        });
     }
     if (contactModal) {
       contactModal.hidden = false;
