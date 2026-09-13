@@ -65,3 +65,58 @@ document.querySelector("#show-all")?.addEventListener("click", (event) => {
   filterPortfolio(document.querySelector(".filter.active").dataset.filter);
 });
 filterPortfolio();
+
+const contactForm = document.querySelector("#contact-form");
+const contactModal = document.querySelector("#contact-modal");
+const modalCloseButtons = document.querySelectorAll("[data-modal-close]");
+const contactSubmitButton = contactForm?.querySelector("button[type=submit]");
+
+function closeContactModal() {
+  if (!contactModal) return;
+  contactModal.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
+modalCloseButtons.forEach((button) => button.addEventListener("click", closeContactModal));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeContactModal();
+});
+
+contactForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!contactSubmitButton) return;
+
+  const originalLabel = contactSubmitButton.innerHTML;
+  contactSubmitButton.disabled = true;
+  contactSubmitButton.innerHTML = "Sending...";
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: new FormData(contactForm),
+      headers: { Accept: "text/plain" },
+    });
+    const message = (await response.text()).trim();
+
+    if (!response.ok || message !== "OK") {
+      throw new Error(message || "Unable to send your message right now.");
+    }
+
+    contactForm.reset();
+    if (window.grecaptcha) {
+      window.grecaptcha.execute("6LdLo6spAAAAAO46WwArY_t1n6QoeY_lChqDi_Yy", { action: "contact_form" }).then((token) => {
+        const tokenField = contactForm.querySelector("[name=recaptcha_token]");
+        if (tokenField) tokenField.value = token;
+      });
+    }
+    if (contactModal) {
+      contactModal.hidden = false;
+      document.body.classList.add("modal-open");
+    }
+  } catch (error) {
+    window.alert(error instanceof Error ? error.message : "Unable to send your message right now.");
+  } finally {
+    contactSubmitButton.disabled = false;
+    contactSubmitButton.innerHTML = originalLabel;
+  }
+});

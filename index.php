@@ -298,7 +298,7 @@ $featured = array_slice($websites, 0, 4);
                         <p>Denpasar, Bali 80112<br>Indonesia</p><a href="mailto:kiel888897@gmail.com">kiel888897@gmail.com</a><a href="https://wa.me/6281275097129">+62 812 7509 7129</a>
                     </div>
                 </div>
-                <form class="contact-form" action="contact.php" method="post">
+                <form class="contact-form" id="contact-form" action="contact.php" method="post">
                     <label>Name<input type="text" name="name" required></label>
                     <label>Email<input type="email" name="email" required></label>
                     <label>Project Type<select name="project">
@@ -315,6 +315,17 @@ $featured = array_slice($websites, 0, 4);
             </div>
         </section>
     </main>
+    <div class="contact-modal" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" hidden>
+        <div class="contact-modal-backdrop" data-modal-close></div>
+        <div class="contact-modal-card">
+            <button class="contact-modal-close" type="button" aria-label="Close message" data-modal-close>&times;</button>
+            <div class="contact-modal-mark" aria-hidden="true">&#10003;</div>
+            <div class="section-kicker">MESSAGE SENT</div>
+            <h2 id="contact-modal-title">Thanks for reaching out.</h2>
+            <p>Your message is on its way. I will get back to you as soon as possible.</p>
+            <button class="button button-primary" type="button" data-modal-close>Back to portfolio <span>&#8599;</span></button>
+        </div>
+    </div>
     <script>
         grecaptcha.ready(function() {
             grecaptcha.execute('6LdLo6spAAAAAO46WwArY_t1n6QoeY_lChqDi_Yy', {
