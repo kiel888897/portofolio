@@ -22,7 +22,9 @@ $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 $rateFile = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'profile_contact_' . hash('sha256', $clientIp) . '.json';
 $now = time();
 $rateData = is_file($rateFile) ? json_decode((string) file_get_contents($rateFile), true) : [];
-$recentRequests = array_values(array_filter(is_array($rateData) ? $rateData : [], static fn($timestamp): bool => is_int($timestamp) && $timestamp > $now - 3600));
+$recentRequests = array_values(array_filter(is_array($rateData) ? $rateData : [], static function ($timestamp): bool {
+    return is_int($timestamp) && $timestamp > $now - 3600;
+}));
 if (count($recentRequests) >= 3) {
     http_response_code(429);
     exit('Too many requests. Please try again later.');
