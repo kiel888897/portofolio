@@ -341,7 +341,7 @@ $featured = array_slice($websites, 0, 4);
         </div>
         <div class="container footer-bottom"><span>Designed &amp; built with code.</span><span>DESIGN <i>→</i> BUILD <i>→</i> OPTIMIZE</span></div>
     </footer>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js?v=20260914"></script>
 </body>
 
 </html>
