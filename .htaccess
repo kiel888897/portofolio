@@ -1,0 +1,3 @@
+<FilesMatch "^(config\.php|\.env|.*\.log)$">
+    Require all denied
+</FilesMatch>
