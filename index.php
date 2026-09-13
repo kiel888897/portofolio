@@ -69,7 +69,7 @@ $featured = array_slice($websites, 0, 4);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js?render=6LdLo6spAAAAAO46WwArY_t1n6QoeY_lChqDi_Yy"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20260914">
 </head>
 
 <body>
